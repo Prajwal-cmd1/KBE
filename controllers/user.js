@@ -1,4 +1,4 @@
-import { compare } from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { User } from "../models/user.js";
 import { cookieOption, emitEvent, sendToken, uploadFilesToCloudinary } from "../utils/features.js";
 import { tyrCatch } from "../middlewares/error.js";
@@ -8,6 +8,7 @@ import { Request } from "../models/request.js";
 import { NEW_REQUEST, REFETCH_CHATS } from "../constants/events.js";
 import { getOtherMember } from "../lib/helper.js";
 
+const { compare } = bcryptjs;
 //login and save token in cookie
 const login = tyrCatch(async (req, res, next) => {
   const { username, password } = req.body;

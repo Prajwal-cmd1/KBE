@@ -1,6 +1,6 @@
-import { hash } from "bcrypt";
+import bcryptjs from "bcryptjs";
 import mongoose, { Schema, model } from "mongoose";
-
+const { hash } = bcryptjs;
 const userSchema = new Schema({
     name: {
         type: String,
