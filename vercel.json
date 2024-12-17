@@ -1,1 +1,17 @@
-{ "version": 2, "rewrites": [{ "source": "/(.*)", "destination": "/api" }] }
+{
+  "version": 2,
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_ENV_VAR": "value"
+    },
+    "commands": {
+      "build": "expo export -p web && sed -i 's/\"type\": \"module\"/\"type\": \"commonjs\"/' package.json"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ]
+}
