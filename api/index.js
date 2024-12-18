@@ -34,7 +34,11 @@ cloudinary.config({
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  cors: corsOption,
+  cors: {
+    origin:["http://localhost:5173","http://localhost:4173","https://knock-frontend.vercel.app",process.env.CLIENT_URL],
+    methods:["GET","POST","PUT","DELETE"],
+    credentials: true,
+}
 });
 
 app.set("io", io); // Access io in getSocket function in other file
@@ -46,7 +50,11 @@ const onlineUsers = new Set();
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOption));
+app.use(cors({
+    origin:["http://localhost:5173","http://localhost:4173","https://knock-frontend.vercel.app",process.env.CLIENT_URL],
+    methods:["GET","POST","PUT","DELETE"],
+    credentials: true,
+}));
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/chat", chatRouter);
