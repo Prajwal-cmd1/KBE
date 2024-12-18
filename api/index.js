@@ -132,7 +132,9 @@ io.on("connection", (socket) => {
 });
 
 app.use(errorMiddleware);
-
+server.listen(port, () => {
+ 
+});
 
 
 // Export the server as the default export
