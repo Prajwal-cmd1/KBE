@@ -76,8 +76,12 @@ app.get("/", (req, res) => {
 
 // Socket middleware
 io.use((socket, next) => {
-  cookieParser()(socket.request, socket.request.res, async (err) => {
-    await socketAuthenticator(err, socket, next);
+  // cookieParser()(socket.request, socket.request.res, async (err) => {
+  //   await socketAuthenticator(err, socket, next);
+  cookieParser()(socket.request, socket.request.res || {}, (err) => {
+    if (err) return next(new Error("Authentication error"));
+    await socketAuthenticator(err, socket, next); // Verify token here
+  });
   });
 });
 
