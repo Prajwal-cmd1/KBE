@@ -34,7 +34,8 @@ cloudinary.config({
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  cors: corsOption
+  cors: corsOption,
+  transports: ["websocket", "polling"],
   
 });
 
