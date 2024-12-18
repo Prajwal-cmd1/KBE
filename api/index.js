@@ -35,7 +35,6 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
-  transports: ["websocket", "polling"],
   
 });
 
