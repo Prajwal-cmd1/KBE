@@ -36,7 +36,7 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
         origin: ["https://knock-frontend.vercel.app"], // Allow your frontend origin
-        methods: ["GET", "POST"], // Specify allowed methods
+        methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
         credentials: true, // Allow cookies and headers
     },
 });
