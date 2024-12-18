@@ -133,6 +133,10 @@ io.on("connection", (socket) => {
 
 app.use(errorMiddleware);
 
+server.listen(port, () => {
+  console.log("connect at port");
+});
+
 // Export the server as the default export
 
 
