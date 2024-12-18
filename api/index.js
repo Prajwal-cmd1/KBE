@@ -44,7 +44,7 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
-  allowEIO3: true,
+  
 });
 
 app.set("io", io); // Access io in getSocket function in other file
