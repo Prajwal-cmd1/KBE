@@ -132,9 +132,12 @@ io.on("connection", (socket) => {
 });
 
 app.use(errorMiddleware);
-server.listen(port, () => {
- 
-});
+if (!server.listening) {
+  server.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
 
 
 // Export the server as the default export
