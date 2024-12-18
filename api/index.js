@@ -19,7 +19,7 @@ import { corsOption } from "../constants/config.js";
 import { socketAuthenticator } from "../middlewares/auth.js";
 
 dotenv.config({
-  path: "./.env",
+  path: "../.env",
 });
 
 connectDB(process.env.MONGODB_URI);
