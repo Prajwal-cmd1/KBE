@@ -44,6 +44,7 @@ const io = new Server(server, {
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
+  transports: ["websocket", "polling"],
 });
 
 app.set("io", io); // Access io in getSocket function in other file
