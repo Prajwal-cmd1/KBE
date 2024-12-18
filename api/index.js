@@ -35,7 +35,6 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
-  allowEIO3: true
 });
 
 app.set("io", io); // Access io in getSocket function in other file
