@@ -65,11 +65,7 @@ io.use((socket, next) => {
 
 // Socket connections
 io.on("connection", (socket) => {
-  const transport = socket.conn.transport.name; // in most cases, "polling"
-
-  socket.conn.on("upgrade", () => {
-    const upgradedTransport = socket.conn.transport.name; // in most cases, "websocket"
-  }); //
+  
   const user = socket.user; // Logged-in user
   userSocketIDs.set(user._id.toString(), socket.id);
 
