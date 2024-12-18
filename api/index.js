@@ -18,153 +18,35 @@ import { Message } from "../models/message.js";
 import { corsOption } from "../constants/config.js";
 import { socketAuthenticator } from "../middlewares/auth.js";
 
-// dotenv.config({
-//   path: "./.env",
-// });
-
-// connectDB(process.env.MONGODB_URI);
-
-// // Cloudinary configuration
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-// });
-
-// const app = express();
-// const server = createServer(app);
-// const io = new Server(server, {
-//   cors: corsOption,
-// });
-
-// app.set("io", io); // Access io in getSocket function in other file
-
-// const port = process.env.PORT || 3000;
-// const userSocketIDs = new Map(); // Currently active users
-// const onlineUsers = new Set();
-
-// // Middleware
-// app.use(express.json());
-// app.use(cookieParser());
-// app.use(cors(corsOption));
-
-// app.use("/api/v1/user", userRouter);
-// app.use("/api/v1/chat", chatRouter);
-
-// app.get("/", (req, res) => {
-//   res.json("Hello");
-// });
-
-// // Socket middleware
-// io.use((socket, next) => {
-//   cookieParser()(socket.request, socket.request.res, async (err) => {
-//     await socketAuthenticator(err, socket, next);
-//   });
-// });
-
-// // Socket connections
-// io.on("connection", (socket) => {
-//   const user = socket.user; // Logged-in user
-//   userSocketIDs.set(user._id.toString(), socket.id);
-
-//   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
-//     const messageForRealTime = {
-//       content: message,
-//       _id: uuid(),
-//       sender: {
-//         _id: user._id,
-//         name: user.name,
-//       },
-//       chat: chatId,
-//       createdAt: new Date().toISOString(),
-//     };
-
-//     const messageForDb = {
-//       content: message,
-//       sender: user._id,
-//       chat: chatId,
-//     };
-
-//     const membersSocket = getSockets(members); // All recipients
-
-//     io.to(membersSocket).emit(NEW_MESSAGE, {
-//       chatId,
-//       message: messageForRealTime,
-//     });
-
-//     io.to(membersSocket).emit(NEW_MESSAGE_ALERT, { chatId }); // For message count
-
-//     try {
-//       await Message.create(messageForDb);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   });
-
-//   socket.on(START_TYPING, ({ members, chatId }) => {
-//     const memberSockets = getSockets(members);
-//     socket.to(memberSockets).emit(START_TYPING, { chatId });
-//   });
-
-//   socket.on(STOP_TYPING, ({ members, chatId }) => {
-//     const memberSockets = getSockets(members);
-//     socket.to(memberSockets).emit(STOP_TYPING, { chatId });
-//   });
-
-//   socket.on(CHAT_JOINED, ({ userId, members }) => {
-//     onlineUsers.add(userId.toString());
-//     const membersSocket = getSockets(members);
-//     io.to(membersSocket).emit(ONLINE_USERS, Array.from(onlineUsers));
-//   });
-
-//   socket.on(CHAT_LEAVED, ({ userId, members }) => {
-//     onlineUsers.delete(userId.toString());
-//     const membersSocket = getSockets(members);
-//     io.to(membersSocket).emit(ONLINE_USERS, Array.from(onlineUsers));
-//   });
-
-//   socket.on("disconnect", () => {
-//     userSocketIDs.delete(user._id.toString());
-//     onlineUsers.delete(user._id.toString());
-//     socket.broadcast.emit(ONLINE_USERS, Array.from(onlineUsers));
-//   });
-// });
-
-// app.use(errorMiddleware);
-
-// Export the server as the default export
-
-
-
 dotenv.config({
   path: "./.env",
 });
 
 connectDB(process.env.MONGODB_URI);
 
-//cloudinary 
+// Cloudinary configuration
 cloudinary.config({
-  cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:process.env.CLOUDINARY_API_KEY,
-  api_secret:process.env.CLOUDINARY_API_SECRET
-})
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-  cors:corsOption
+  cors: corsOption,
 });
 
-app.set("io",io)  // to access io in getSocket function in other file 
+app.set("io", io); // Access io in getSocket function in other file
 
 const port = process.env.PORT || 3000;
-const userSocketIDs= new Map()  // currently active users 
-const onlineUsers = new Set()
+const userSocketIDs = new Map(); // Currently active users
+const onlineUsers = new Set();
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOption))
+app.use(cors(corsOption));
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/chat", chatRouter);
@@ -173,22 +55,19 @@ app.get("/", (req, res) => {
   res.json("Hello");
 });
 
+// Socket middleware
+io.use((socket, next) => {
+  cookieParser()(socket.request, socket.request.res, async (err) => {
+    await socketAuthenticator(err, socket, next);
+  });
+});
 
-//socket middleware
-io.use((socket,next)=>{      // will use cookie to authenticate 
-  cookieParser()(socket.request,socket.request.res, async (err)=>{
-    await socketAuthenticator(err,socket , next)
-  })
-}) 
-//socket
+// Socket connections
 io.on("connection", (socket) => {
-    const user = socket.user // logged in 
-    userSocketIDs.set(user._id.toString(),socket.id)
-
-
+  const user = socket.user; // Logged-in user
+  userSocketIDs.set(user._id.toString(), socket.id);
 
   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
-
     const messageForRealTime = {
       content: message,
       _id: uuid(),
@@ -200,73 +79,64 @@ io.on("connection", (socket) => {
       createdAt: new Date().toISOString(),
     };
 
-    const messageForDb={
-        content:message,
-        sender:user._id,
-        chat:chatId
+    const messageForDb = {
+      content: message,
+      sender: user._id,
+      chat: chatId,
+    };
+
+    const membersSocket = getSockets(members); // All recipients
+
+    io.to(membersSocket).emit(NEW_MESSAGE, {
+      chatId,
+      message: messageForRealTime,
+    });
+
+    io.to(membersSocket).emit(NEW_MESSAGE_ALERT, { chatId }); // For message count
+
+    try {
+      await Message.create(messageForDb);
+    } catch (error) {
+      console.log(error);
     }
-
-    const membersSocket = getSockets(members)  // to all whom to send message 
-
-    io.to(membersSocket).emit(NEW_MESSAGE,{
-        chatId,
-        message:messageForRealTime
-    })
-
-    io.to(membersSocket).emit(NEW_MESSAGE_ALERT,{chatId})// to count message for chatId
-
-   try {
-     await Message.create(messageForDb)
-   } catch (error) {
-    console.log(error)
-   }
-
   });
 
-  socket.on(START_TYPING,({members,chatId})=>{
+  socket.on(START_TYPING, ({ members, chatId }) => {
+    const memberSockets = getSockets(members);
+    socket.to(memberSockets).emit(START_TYPING, { chatId });
+  });
 
-    const memeberSockets = getSockets(members)
+  socket.on(STOP_TYPING, ({ members, chatId }) => {
+    const memberSockets = getSockets(members);
+    socket.to(memberSockets).emit(STOP_TYPING, { chatId });
+  });
 
-    socket.to(memeberSockets).emit(START_TYPING,{chatId})
-  })
+  socket.on(CHAT_JOINED, ({ userId, members }) => {
+    onlineUsers.add(userId.toString());
+    const membersSocket = getSockets(members);
+    io.to(membersSocket).emit(ONLINE_USERS, Array.from(onlineUsers));
+  });
 
-  
-  socket.on(STOP_TYPING,({members,chatId})=>{
-
-    const memeberSockets = getSockets(members)
-
-    socket.to(memeberSockets).emit(STOP_TYPING,{chatId})
-  })
-
-  socket.on(CHAT_JOINED,({userId,members})=>{
-    onlineUsers.add(userId.toString())
-
-    const membersSocket = getSockets(members)
-
-    io.to(membersSocket).emit(ONLINE_USERS,Array.from(onlineUsers))
-  })
-
-  socket.on(CHAT_LEAVED,({userId,members})=>{
-    onlineUsers.delete(userId.toString())
-    
-    const membersSocket = getSockets(members)
-
-    io.to(membersSocket).emit(ONLINE_USERS,Array.from(onlineUsers))
-  })
-
+  socket.on(CHAT_LEAVED, ({ userId, members }) => {
+    onlineUsers.delete(userId.toString());
+    const membersSocket = getSockets(members);
+    io.to(membersSocket).emit(ONLINE_USERS, Array.from(onlineUsers));
+  });
 
   socket.on("disconnect", () => {
-    userSocketIDs.delete(user._id.toString())
-    onlineUsers.delete(user._id.toString())
-    socket.broadcast.emit(ONLINE_USERS,Array.from(onlineUsers))
+    userSocketIDs.delete(user._id.toString());
+    onlineUsers.delete(user._id.toString());
+    socket.broadcast.emit(ONLINE_USERS, Array.from(onlineUsers));
   });
 });
 
 app.use(errorMiddleware);
 
-server.listen(port, () => {
-  console.log("connect at port");
-});
+// Export the server as the default export
+
+
+
+
 export default server;
 
 // If needed elsewhere
