@@ -41,7 +41,14 @@ const io = new Server(server, {
   cors: corsOption,
    pingTimeout: 60000,
   allowRequest: (req, callback) => {
-    callback(null, false);  // Example logic, modify based on your needs
+    // Allow requests from specific origins
+    const origin = req.headers.origin;
+    const allowedOrigins = ["https://knock-frontend.vercel.app"];
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false); // Reject others
+    }
   },
   allowEIO3: true 
   
