@@ -10,15 +10,13 @@ import { v2 as cloudinary } from "cloudinary";
 import userRouter from "../routes/user.js";
 import chatRouter from "../routes/chat.js";
 
-import { Server } from "socket.io";
+import socketIO from "socket.io";  // Import socket.io as a default export
 import { createServer } from "http";
 import { ONLINE_USERS, CHAT_JOINED, CHAT_LEAVED, NEW_MESSAGE, NEW_MESSAGE_ALERT, START_TYPING, STOP_TYPING } from "../constants/events.js";
 import { getSockets } from "../lib/helper.js";
 import { Message } from "../models/message.js";
 import { corsOption } from "../constants/config.js";
 import { socketAuthenticator } from "../middlewares/auth.js";
-
-
 
 dotenv.config({
   path: "./.env",
@@ -37,11 +35,12 @@ const app = express();
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(cookieParser());
-const server = createServer(app);
-const io = new Server(server, {
-  cors: corsOption,
 
-  
+const server = createServer(app);
+
+// Initialize Socket.IO server (with the default export approach)
+const io = socketIO(server, {
+  cors: corsOption,
 });
 
 app.set("io", io); // Access io in getSocket function in other file
@@ -51,9 +50,6 @@ const userSocketIDs = new Map(); // Currently active users
 const onlineUsers = new Set();
 
 // Middleware
-
-
-
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/chat", chatRouter);
 
@@ -70,9 +66,7 @@ io.use((socket, next) => {
 
 // Socket connections
 io.on("connection", (socket) => {
-  
   const user = socket.user; // Logged-in user
- 
   userSocketIDs.set(user._id.toString(), socket.id);
 
   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
@@ -140,12 +134,7 @@ io.on("connection", (socket) => {
 
 app.use(errorMiddleware);
 
-
-
-
 // Export the server as the default export
-
-
 export default server;
 
 // If needed elsewhere
