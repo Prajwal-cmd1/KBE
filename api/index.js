@@ -42,7 +42,8 @@ const io = new Server(server, {
    pingTimeout: 60000,
   allowRequest: (req, callback) => {
     callback(null, false);  // Example logic, modify based on your needs
-  }
+  },
+  allowEIO3: true 
   
 });
 
