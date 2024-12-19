@@ -19,7 +19,7 @@ import { corsOption } from "../constants/config.js";
 import { socketAuthenticator } from "../middlewares/auth.js";
 
 dotenv.config({
-  path: "./.env",
+  path: "../.env",
 });
 
 connectDB(process.env.MONGODB_URI);
@@ -143,7 +143,7 @@ app.use(errorMiddleware);
 // Export the server as the default export
 
 
-export default io;
+export default server;
 
 // If needed elsewhere
 export { userSocketIDs };
