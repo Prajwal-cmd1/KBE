@@ -33,6 +33,8 @@ cloudinary.config({
 
 const app = express();
 app.use(cors(corsOption));
+app.use(express.json());
+app.use(cookieParser());
 const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
@@ -48,8 +50,7 @@ const userSocketIDs = new Map(); // Currently active users
 const onlineUsers = new Set();
 
 // Middleware
-app.use(express.json());
-app.use(cookieParser());
+
 
 
 app.use("/api/v1/user", userRouter);
