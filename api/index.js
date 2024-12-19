@@ -37,10 +37,19 @@ app.use(express.json());
 app.use(cookieParser());
 const server = createServer(app);
 const io = new Server(server, {
-  transports: ['websocket', 'polling'],
+  //transports: ['websocket', 'polling'],
   cors: corsOption,
-  pingTimeout: 60000,
  path: "/socket.io/",
+  allowRequest: (req, callback) => {
+    // Allow requests from specific origins
+    const origin = req.headers.origin;
+    const allowedOrigins = ["https://knock-frontend.vercel.app"];
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, false); // Reject others
+    }
+  },
   
 });
 
