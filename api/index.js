@@ -39,7 +39,6 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
    pingTimeout: 60000,
-  pingInterval: 25000
   
 });
 
