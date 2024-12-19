@@ -142,7 +142,9 @@ app.use(errorMiddleware);
 
 // Export the server as the default export
 
-
+server.listen(port, () => {
+  console.log("connect at port");
+});
 
 
 export default server;
