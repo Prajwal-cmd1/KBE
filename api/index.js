@@ -65,17 +65,17 @@ app.get("/", (req, res) => {
 });
 
 // Socket middleware
-// io.use((socket, next) => {
-//   cookieParser()(socket.request, socket.request.res, async (err) => {
-//     await socketAuthenticator(err, socket, next);
-//   });
-// });
+io.use((socket, next) => {
+  cookieParser()(socket.request, socket.request.res, async (err) => {
+    await socketAuthenticator(err, socket, next);
+  });
+});
 
 // Socket connections
 io.on("connection", (socket) => {
   
   const user = socket.user; // Logged-in user
-  console.log(user,socket.id)
+ 
   userSocketIDs.set(user._id.toString(), socket.id);
 
   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
