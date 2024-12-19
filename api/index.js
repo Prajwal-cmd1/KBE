@@ -38,8 +38,7 @@ app.use(cookieParser());
 const server = createServer(app);
 const io = new Server(server, {
   cors: corsOption,
- path: "/socket.io",
-  transports: [ "websocket","polling"],
+
   
 });
 
