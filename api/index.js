@@ -147,7 +147,7 @@ server.listen(port, () => {
 });
 
 
-export default server;
+export default io;
 
 // If needed elsewhere
 export { userSocketIDs };
