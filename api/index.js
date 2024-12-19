@@ -75,6 +75,7 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   
   const user = socket.user; // Logged-in user
+  console.log(user,socket.id)
   userSocketIDs.set(user._id.toString(), socket.id);
 
   socket.on(NEW_MESSAGE, async ({ chatId, members, message }) => {
