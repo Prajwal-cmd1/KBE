@@ -142,12 +142,8 @@ app.use(errorMiddleware);
 
 // Export the server as the default export
 
-app.listen(port, () => {
-  console.log("connect at port");
-});
 
-
-export default io;
+export default server;
 
 // If needed elsewhere
 export { userSocketIDs };
