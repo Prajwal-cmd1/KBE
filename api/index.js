@@ -143,7 +143,7 @@ app.use(errorMiddleware);
 // Export the server as the default export
 
 
-export default server;
+export default io;
 
 // If needed elsewhere
 export { userSocketIDs };
