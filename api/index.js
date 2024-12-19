@@ -40,6 +40,9 @@ const io = new Server(server, {
   transports: ['websocket', 'polling'],
   cors: corsOption,
    pingTimeout: 60000,
+  allowRequest: (req, callback) => {
+    callback(null, false);  // Example logic, modify based on your needs
+  }
   
 });
 
