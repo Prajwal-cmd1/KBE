@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(cookieParser());
 const server = createServer(app);
 const io = new Server(server, {
-  transports: ['websocket', 'polling'],
+  //transports: ['websocket', 'polling'],
   cors: corsOption,
    pingTimeout: 60000,
   allowRequest: (req, callback) => {
