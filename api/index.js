@@ -41,6 +41,8 @@ const server = createServer(app);
 // Initialize Socket.IO server (with the default export approach)
 const io = socketIO(server, {
   cors: corsOption,
+  pingTimeout: 5000, // Timeout for pinging socket.io
+  pingInterval: 2500,
 });
 
 app.set("io", io); // Access io in getSocket function in other file
